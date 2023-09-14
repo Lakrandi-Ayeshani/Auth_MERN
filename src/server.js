@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require('cookie-parser');
 const { userRouter } = require("./routes/user");
+const { tasksRouter } = require("./routes/tasks");
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const { connectDB } = require("./config/db");
 dotenv.config();
@@ -17,7 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => res.send("Server is running correctly"));
-app.use('/api/user', userRouter)
+app.use('/api/user', userRouter);
+app.use('/api/tasks', tasksRouter);
 
 app.use(notFound);
 app.use(errorHandler);
