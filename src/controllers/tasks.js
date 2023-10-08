@@ -28,15 +28,10 @@ const taskModel = require('../models/tasks.js');
 // @access   Privet
 const createTask = asyncHandler(async (req, res) => {
     const { title, description, status } = req.body;
-    
-    // const userExist = await taskModel.findOne({email: email});
-
-    // if(userExist) {
-    //     res.status(400);
-    //     throw new Error('User Already Exist');
-    // }
+    console.log("user", req.user);
 
     const newTask = await taskModel.create({
+        user: req.user._id,
         title,
         description,
         status,
@@ -62,8 +57,11 @@ const createTask = asyncHandler(async (req, res) => {
 // @access   Privet
 const getTasks = asyncHandler(async (req, res) => {
     try {
-        const tasks = await taskModel.find();
-      
+        const tasks = await taskModel
+            .find({user: req.user._id}, 'title status description')
+            .populate('user', '_id')
+            .exec();
+
         if (tasks) {
           res.status(200).json({ tasks });
         } else {
