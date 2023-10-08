@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
+const userModel = require('./user.js')
 
 const taskSchema = mongoose.Schema({
+    user: {
+        type: mongoose.ObjectId, ref: userModel
+    },
     title: {
         type: String,
         required: true
@@ -8,7 +12,6 @@ const taskSchema = mongoose.Schema({
     description: {
         type: String,
         required: true,
-        unique: true
     },
     status: {
         type: String,
